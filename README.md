@@ -3,6 +3,16 @@ vagrant-exec [![Gem Version](https://badge.fury.io/rb/vagrant-exec.png)](http://
 
 Vagrant plugin to execute commands within the context of VM synced directory.
 
+Patched
+---
+
+This version of vagrant-exec has been patched to allow running local
+scripts from `.vagrant/local-scripts`. If a file with the specified
+name exists in this directory it will be called on the host machine,
+otherwise the usual logic applies. This is mainly helping to get nicer
+project automation where some commands need to be triggered on the
+host.
+
 Description
 -----------
 

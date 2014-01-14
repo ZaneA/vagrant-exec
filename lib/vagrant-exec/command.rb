@@ -22,8 +22,19 @@ module VagrantPlugins
           command << prepend_command(vm.config.exec.prepends, plain)
           command << plain
 
+          local_command = ""
+
+          # Handle local-scripts
+          local_path = '.vagrant/local-scripts/'
+          if File.exists?(local_path + cmd)
+            local_command << local_path + plain
+            pid = Process.spawn(ENV, local_command)
+            Process.wait(pid)
+            return
+          end
+
           @logger.info("Executing single command on remote machine: #{command}")
-          ssh_opts = { extra_args: ['-q'] } # make it quiet
+          ssh_opts = { extra_args: ['-q', '-t'] } # make it quiet
           env = vm.action(:ssh_run, ssh_run_command: command, ssh_opts: ssh_opts)
 
           status = env[:ssh_run_exit_status] || 0
